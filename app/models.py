@@ -12,3 +12,4 @@ class User(Base):
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     age = Column(Integer, nullable=True)  # the second migration - I want to add age-column
+    hashed_password = Column(String, nullable=True)  # <-- add hashed password
