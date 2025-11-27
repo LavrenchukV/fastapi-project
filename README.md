@@ -59,10 +59,15 @@ Alembic is used to manage database schema changes.
 Completed work includes:
 
 -Initial migration that creates the users table
+
 -Migration adding the age field
+
 -Full Alembic configuration (env.py, alembic.ini)
+
 -Password hashing integration
+
 -New migrations for product and product_details tables
+
 -CRUD-style operations through Alembic (Create, Update, Delete)
 
 Common commands:
