@@ -1,0 +1,32 @@
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment variables file
+.env
+
+# Editor/IDE files
+.vscode/
+.idea/
+
+# Git repo
+.git/
+.gitignore
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# OS files
+.DS_Store
+
+# Byte-compiled 
+*.py[cod]
+
+# Alembic cache
+alembic/versions/__py
