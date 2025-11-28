@@ -24,31 +24,36 @@ Interactive API documentation (Swagger UI):
 ## Project Structure
 ```markdown
 .
-├── app/
-│   ├── main.py          # FastAPI entrypoint and route definitions
-│   ├── database.py      # SQLAlchemy engine, SessionLocal, DB connection logic
-│   ├── models.py        # ORM models (User, Product, ProductDetails, etc.)
-│   ├── schemas.py       # Pydantic models for request/response validation
-│   ├── crud.py          # All CRUD functions interacting with the database
-│   ├── security.py      # Password hashing utilities (bcrypt / passlib)
+├── app/                               # Main FastAPI application package
+│   ├── main.py                        # Application entrypoint (FastAPI instance, routers)
+│   ├── database.py                    # Database engine, SessionLocal, and connection setup
+│   ├── models.py                      # SQLAlchemy ORM models (User, Product, etc.)
+│   ├── schemas.py                     # Pydantic schemas for request/response validation
+│   ├── crud.py                        # CRUD operations and business logic accessing the DB
+│   ├── security.py                    # Password hashing and authentication utilities
 │   └── __init__.py
 │
-├── alembic/
-│   ├── versions/        # Auto-generated migration files
-│   ├── env.py           # Alembic environment and metadata configuration
-│   └── script.py.mako   # Template for new Alembic revisions
+├── alembic/                           # Alembic migrations directory
+│   ├── versions/                      # Auto-generated migration revision files
+│   ├── env.py                         # Alembic environment and metadata configuration
+│   └── script.py.mako                 # Template for generating new migration files
 │
-├── alembic.ini          # Alembic main configuration
-├── requirements.txt     # Python dependencies
-├── Dockerfile           # Docker build instructions
-├── .dockerignore        # Ignore rules for Docker build context
-├── .env.example         # Environment variable template
-├── .env                 # Local environment variables (not in Git)
-├── .gitignore           # Git ignore rules
-└── README.md            # Project documentation
+├── .github/                           # GitHub-based automation (CI/CD)
+│   └── workflows/
+│       └── ci.yml                     # GitHub Actions pipeline (runs migrations + tests)
+│
+├── alembic.ini                        # Main Alembic configuration file
+├── requirements.txt                   # Python dependencies for the project
+├── Dockerfile                         # Docker image build instructions for FastAPI app
+├── .dockerignore                      # Files excluded from Docker build context
+├── .env.example                       # Template for environment variables
+├── .env                               # Local environment variables (not committed to Git)
+├── .gitignore                         # Files and folders excluded from Git version control
+└── README.md                          # Project documentation and usage instructions
 ```
 
 Additional project files:
+
 - alembic/ — Alembic migrations folder
 - alembic.ini — Alembic configuration file
 - requirements.txt — Project dependencies (pip freeze)
@@ -57,6 +62,7 @@ Additional project files:
 - Dockerfile — Docker image build configuration
 - .dockerignore — Ignore rules for Docker build context
 - .gitignore — Files excluded from source control
+- .github/workflows/ci.yml — Continuous Integration pipeline (runs Alembic migrations and tests)
 - README.md — Project description and documentation
 
 ---
@@ -95,7 +101,37 @@ alembic downgrade -1
 ```
 Migrations are stored in: alembic/versions/
 
+CI Migration Verification
+
+All Alembic migrations are automatically executed inside the GitHub Actions pipeline, ensuring schema consistency and preventing broken revisions.
+This guarantees migration integrity on every commit.
+
 ---
+
+## Continuous Integration (CI) – GitHub Actions
+
+This project includes a CI pipeline using GitHub Actions, which automatically runs on each push or pull request to the main branch.
+
+🔧 What the CI pipeline does:
+
+- Sets up a fresh Ubuntu environment
+- Installs Python and all dependencies
+- Starts a temporary PostgreSQL database using a Docker service
+- Exposes the database through the environment variable DATABASE_URL
+- Applies all Alembic migrations automatically:
+- alembic upgrade head
+- Runs all automated tests (pytest)
+
+This ensures that:
+
+- Migrations always work on a clean database
+- The application structure stays stable
+- Code is validated before merging into main
+
+CI file location:
+.github/workflows/ci.yml
+
+--- 
 
 ## Docker Support
 
@@ -120,3 +156,8 @@ docker run --env-file .env -p 8000:8000 internship-app
 The application will start on:
 
 ➡️ http://localhost:8000
+
+CI/CD Note
+
+Docker is used locally for development, while GitHub Actions uses a lightweight PostgreSQL Docker service for schema validation and automated tests.
+The application container itself is not yet built or deployed in CI (deployment automation may be added in future stages).
