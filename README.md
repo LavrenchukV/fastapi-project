@@ -74,4 +74,32 @@ alembic downgrade -1
 ```
 Migrations are stored in: alembic/versions/
 
-Docker (In Progress)
+---
+
+## Docker Support
+
+The project includes a fully configured Docker environment for running the FastAPI application and applying Alembic migrations automatically.
+
+Dockerfile key features:
+
+- Uses python:3.11-slim as the base image
+- Installs all dependencies from requirements.txt
+- Copies the entire project into the container
+- Automatically applies Alembic migrations on container startup
+- Runs the FastAPI app using Uvicorn
+
+
+Build the Docker image:
+docker build -t internship-app .
+
+Run the container with environment variables:
+docker run --env-file .env -p 8000:8000 internship-app
+
+
+The application will start on:
+
+➡️ http://localhost:8000
+
+Swagger docs:
+
+➡️ http://localhost:8000/docs
