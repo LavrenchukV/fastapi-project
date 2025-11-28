@@ -23,20 +23,41 @@ Interactive API documentation (Swagger UI):
 
 ## Project Structure
 ```markdown
-app/
-├── main.py        → FastAPI entrypoint and routes
-├── database.py    → SQLAlchemy engine + session + DB connection
-├── models.py      → ORM models (User, etc.)
-├── schemas.py     → Pydantic models for validation
-├── crud.py        → All database CRUD logic
-└── __init__.py    → Package marker
+.
+├── app/
+│   ├── main.py          # FastAPI entrypoint and route definitions
+│   ├── database.py      # SQLAlchemy engine, SessionLocal, DB connection logic
+│   ├── models.py        # ORM models (User, Product, ProductDetails, etc.)
+│   ├── schemas.py       # Pydantic models for request/response validation
+│   ├── crud.py          # All CRUD functions interacting with the database
+│   ├── security.py      # Password hashing utilities (bcrypt / passlib)
+│   └── __init__.py
+│
+├── alembic/
+│   ├── versions/        # Auto-generated migration files
+│   ├── env.py           # Alembic environment and metadata configuration
+│   └── script.py.mako   # Template for new Alembic revisions
+│
+├── alembic.ini          # Alembic main configuration
+├── requirements.txt     # Python dependencies
+├── Dockerfile           # Docker build instructions
+├── .dockerignore        # Ignore rules for Docker build context
+├── .env.example         # Environment variable template
+├── .env                 # Local environment variables (not in Git)
+├── .gitignore           # Git ignore rules
+└── README.md            # Project documentation
 ```
 
 Additional project files:
-- alembic/ # Alembic migrations folder
-- alembic.ini # Alembic configuration file
-- requirements.txt # Project dependencies
-- .env # Environment variables (not included in repo)
+- alembic/ — Alembic migrations folder
+- alembic.ini — Alembic configuration file
+- requirements.txt — Project dependencies (pip freeze)
+- .env — Environment variables (not included in repo)
+- .env.example — Template for environment variables
+- Dockerfile — Docker image build configuration
+- .dockerignore — Ignore rules for Docker build context
+- .gitignore — Files excluded from source control
+- README.md — Project description and documentation
 
 ---
 
@@ -99,7 +120,3 @@ docker run --env-file .env -p 8000:8000 internship-app
 The application will start on:
 
 ➡️ http://localhost:8000
-
-Swagger docs:
-
-➡️ http://localhost:8000/docs
